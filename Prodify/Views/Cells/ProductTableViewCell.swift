@@ -24,8 +24,6 @@ class ProductTableViewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Make image view rounded or proper content mode
-        productImageView.contentMode = .scaleAspectFill
-        productImageView.clipsToBounds = true
         productImageView.layer.cornerRadius = 10
         productImageView.clipsToBounds = true
         cardBody.layer.cornerRadius = 10
@@ -41,7 +39,7 @@ class ProductTableViewCell: UITableViewCell {
     func configure(with product: Product) {
         titleLabel.text = product.title
         descLabel.text = product.description
-        categoryLabel.text = product.category
+        categoryLabel.text = product.category.capitalized
         priceLabel.text = "₹\(product.price)"
 
         // Reset previous image
