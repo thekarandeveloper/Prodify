@@ -15,16 +15,33 @@ class ProductViewController: UIViewController, UITableViewDelegate, UITableViewD
     private let noDataLabel = UILabel()
     private let errorView = UIView()
 
+    // Search bar
+    
+        private let searchController = UISearchController(searchResultsController: nil)
+        
+        private var filteredProducts: [Product] = []
+        private var isSearching: Bool {
+            return searchController.isActive && !(searchController.searchBar.text?.isEmpty ?? true)
+        }
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Prodify"
         setupTable()
         setupSpinnerAndNoData()
+        setupSearchController()
         viewModel.delegate = self
         viewModel.loadInitial()
         print("Loaded products: \(viewModel.products.count)")
     }
-
+    private func setupSearchController() {
+        searchController.searchResultsUpdater = self
+        searchController.obscuresBackgroundDuringPresentation = false
+        searchController.searchBar.placeholder = "Search products"
+        navigationItem.searchController = searchController
+        definesPresentationContext = true
+    }
     func setupTable() {
         productTableView.dataSource = self
         productTableView.delegate = self
@@ -90,14 +107,15 @@ class ProductViewController: UIViewController, UITableViewDelegate, UITableViewD
 
 extension ProductViewController {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        viewModel.products.count
+        return isSearching ? filteredProducts.count : viewModel.products.count
     }
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "ProductCell", for: indexPath) as? ProductTableViewCell else {
             return UITableViewCell()
         }
-        let product = viewModel.products[indexPath.row]
+
+        let product = isSearching ? filteredProducts[indexPath.row] : viewModel.products[indexPath.row]
         cell.configure(with: product)
         return cell
     }
@@ -158,5 +176,18 @@ extension ProductViewController: ProductsViewModelDelegate {
     }
     func viewModelNoData() {
         noDataLabel.isHidden = false
+    }
+}
+
+extension ProductViewController: UISearchResultsUpdating {
+    func updateSearchResults(for searchController: UISearchController) {
+        guard let text = searchController.searchBar.text?.lowercased(), !text.isEmpty else {
+            filteredProducts.removeAll()
+            productTableView.reloadData()
+            return
+        }
+        
+        filteredProducts = viewModel.products.filter { $0.title.lowercased().contains(text) }
+        productTableView.reloadData()
     }
 }
