@@ -14,7 +14,12 @@ class ProductViewController: UIViewController, UITableViewDelegate, UITableViewD
     private let footerSpinner = UIActivityIndicatorView(style: .medium)
     private let noDataLabel = UILabel()
     private let errorView = UIView()
-
+    var useRandomAssetImages: Bool = false {
+        didSet {
+            // Reload the table view whenever the flag changes
+            productTableView.reloadData()
+        }
+    }
     // Search bar
     
         private let searchController = UISearchController(searchResultsController: nil)
@@ -31,6 +36,7 @@ class ProductViewController: UIViewController, UITableViewDelegate, UITableViewD
         setupTable()
         setupSpinnerAndNoData()
         setupSearchController()
+        setupNavigationBarMenu()
         viewModel.delegate = self
         viewModel.loadInitial()
         print("Loaded products: \(viewModel.products.count)")
@@ -50,7 +56,26 @@ class ProductViewController: UIViewController, UITableViewDelegate, UITableViewD
         productTableView.estimatedRowHeight = 100
         footerSpinner.frame = CGRect(x: 0, y: 0, width: productTableView.bounds.width, height: 44)
     }
-
+    private func setupNavigationBarMenu() {
+        // Use SF Symbol for ellipsis
+        let ellipsisImage = UIImage(systemName: "ellipsis.circle")
+        
+        // Menu toggle action
+        let toggleAction = UIAction(title: "Show Local Images") { [weak self] _ in
+            guard let self = self else { return }
+            self.useRandomAssetImages.toggle()
+            self.setupNavigationBarMenu() // refresh menu so the switch reflects state
+        }
+        
+        toggleAction.state = useRandomAssetImages ? .on : .off
+        
+        let menu = UIMenu(title: "", options: .displayInline, children: [toggleAction])
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: ellipsisImage,
+                                                            style: .plain,
+                                                            target: nil,
+                                                            action: nil)
+        navigationItem.rightBarButtonItem?.menu = menu
+    }
     private func setupSpinnerAndNoData() {
         spinner.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(spinner)
@@ -116,7 +141,7 @@ extension ProductViewController {
         }
 
         let product = isSearching ? filteredProducts[indexPath.row] : viewModel.products[indexPath.row]
-        cell.configure(with: product)
+        cell.configure(with: product, useRandomAsset: useRandomAssetImages)
         return cell
     }
     
