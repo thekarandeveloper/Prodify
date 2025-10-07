@@ -28,25 +28,25 @@ class ProductImageTableViewCell: UITableViewCell {
         }
 
         /// Configure cell with image URL (async load)
-        func configure(with url: URL?) {
-            productImageView.image = nil
-            imageURL = url
+    func configure(product: Product) {
+        productImageView.image = nil
+        imageURL = product.image
 
-            guard let url = url else { return }
-
-            // Simple async image loading
-            URLSession.shared.dataTask(with: url) { [weak self] data, _, _ in
-                guard let self = self,
-                      let data = data,
-                      let img = UIImage(data: data) else { return }
-                DispatchQueue.main.async {
-                    // Make sure cell hasn't been reused for another URL
-                    if self.imageURL == url {
-                        self.productImageView.image = img
-                    }
-                }
-            }.resume()
+        // Determine placeholder deterministically
+        var placeholder: UIImage? = nil
+        if true {
+            let index = (product.id % 10) + 1    // IDs 0..n -> 1..10
+            placeholder = UIImage(named: "\(index).png")
         }
+
+        ImageLoader.shared.loadImage(
+            id: product.id, from: product.image,
+            placeholder: placeholder,
+            showAssetImage: false // placeholder already set
+        ) { [weak self] img in
+            self?.productImageView.image = img
+        }
+    }
 
         override func prepareForReuse() {
             super.prepareForReuse()

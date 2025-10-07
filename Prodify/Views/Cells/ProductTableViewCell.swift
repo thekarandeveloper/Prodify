@@ -47,7 +47,7 @@ class ProductTableViewCell: UITableViewCell {
 
         // Set image if URL exists
         ImageLoader.shared.loadImage(
-                from: product.image,
+            id: product.id, from: product.image,
                 placeholder: UIImage(named: "placeholder"),
                 showAssetImage: useRandomAsset
             ) { [weak self] img in

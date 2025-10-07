@@ -13,15 +13,15 @@ final class ImageLoader {
 
     private init() {}
 
-    func loadImage(from url: URL?,
+    func loadImage(id:Int, from url: URL?,
                    placeholder: UIImage? = UIImage(named: "placeholder"),
                    showAssetImage: Bool = false,
                    completion: @escaping (UIImage?) -> Void) {
 
         // Random Image Logic
         if showAssetImage {
-            let randomNumber = Int.random(in: 1...10)
-            let assetImage = UIImage(named: "\(randomNumber)")
+            let index = (id % 10) + 1    // IDs 0..n -> 1..10
+            let assetImage = UIImage(named: "\(index).png")
             completion(assetImage)
             return
         }

@@ -52,11 +52,11 @@ extension ProductDetailViewController{
             }
             
             if let url = product.image {
-                cell.configure(with: url)
+                cell.configure(product:product)
             } else {
                 cell.configure(with: UIImage(named: "claude"))
             }
-            cell.configure(with: UIImage(named: "claude"))
+            
             return cell
             
         } else {
