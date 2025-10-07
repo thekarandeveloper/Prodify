@@ -21,6 +21,10 @@
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="kGP-nb-OfF">
                                 <rect key="frame" x="10" y="10" width="66" height="80"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="80" id="kh8-fE-rc6"/>
+                                    <constraint firstAttribute="width" constant="66" id="n8Q-DW-aiS"/>
+                                </constraints>
                             </imageView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="oJf-Zj-xgK">
                                 <rect key="frame" x="86" y="10" width="224" height="80"/>

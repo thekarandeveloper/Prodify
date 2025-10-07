@@ -40,8 +40,33 @@ class ProductTableViewCell: UITableViewCell {
         categoryLabel.setTitle(product.category, for: .normal)
         priceLabel.text = "₹\(product.price)"
 
-        // Optional: print product info for debug
-        print("📝 Configuring cell with product:", product.title)
+        // Reset previous image
+        productImageView.image = nil
+        imageURL = nil
+
+        // Set image if URL exists
+        if let url = product.image {
+            imageURL = url
+            print("🌐 Loading image from:", url)
+            
+            // Using URLSession directly
+            URLSession.shared.dataTask(with: url) { [weak self] data, _, err in
+                guard let self = self else { return }
+                if let data = data, let img = UIImage(data: data) {
+                    // Ensure this cell is still displaying same URL
+                    if self.imageURL == url {
+                        DispatchQueue.main.async {
+                            self.productImageView.image = img
+                        }
+                    }
+                } else if let err = err {
+                    print("❌ Failed to load image:", err)
+                }
+            }.resume()
+        }
+        
+        productImageView.image = UIImage(named: "claude")
+        
     }
 
     override func prepareForReuse() {
