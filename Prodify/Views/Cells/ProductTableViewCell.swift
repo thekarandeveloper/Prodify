@@ -4,65 +4,49 @@
 //
 //  Created by Karan Kumar on 07/10/25.
 //
-
 import UIKit
 
 class ProductTableViewCell: UITableViewCell {
 
-    
     @IBOutlet weak var productImageView: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var descLabel: UILabel!
     @IBOutlet weak var priceLabel: UILabel!
     @IBOutlet weak var categoryLabel: UIButton!
-    
+
     private var imageURL: URL?
-    
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?){
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-        accessoryType = .disclosureIndicator
-        
+
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
     }
-    required init?(coder: NSCoder) { fatalError() }
 
-    
-    func configure(with product: Product) {
-            titleLabel.text = product.title
-            descLabel.text = product.description
-            categoryLabel.setTitle(product.category, for: .normal)
-            priceLabel.text = "₹\(product.price)"
-            productImageView.image = nil
-
-            if let url = product.image {
-                imageURL = url
-                ImageLoader.shared.loadImage(from: url) { [weak self] img in
-                    guard let self = self else { return }
-                    if self.imageURL == url { self.productImageView.image = img }
-                }
-            } else {
-                imageURL = nil
-                productImageView.image = nil
-            }
-        }
-
-        override func prepareForReuse() {
-            super.prepareForReuse()
-            if let url = imageURL { ImageLoader.shared.cancelLoading(url: url) }
-            imageURL = nil
-            productImageView.image = nil
-        }
-    
-    
-    
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
+        // Make image view rounded or proper content mode
+        productImageView.contentMode = .scaleAspectFill
+        productImageView.clipsToBounds = true
+
+        // Optional: rounded corners for cell
+        layer.cornerRadius = 8
+        layer.masksToBounds = true
+
+        // Debug
+        print("✅ ProductTableViewCell awakeFromNib called")
     }
 
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
+    func configure(with product: Product) {
+        titleLabel.text = product.title
+        descLabel.text = product.description
+        categoryLabel.setTitle(product.category, for: .normal)
+        priceLabel.text = "₹\(product.price)"
 
-        // Configure the view for the selected state
+        // Optional: print product info for debug
+        print("📝 Configuring cell with product:", product.title)
     }
-    
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        productImageView.image = nil
+        imageURL = nil
+    }
 }

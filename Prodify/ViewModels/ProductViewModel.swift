@@ -41,23 +41,50 @@ final class ProductsViewModel {
     }
 
     private func load(page: Int) {
-        guard !isLoading else { return }
+        guard !isLoading else {
+            print("⚠️ Already loading, skipping page \(page)")
+            return
+        }
+
         isLoading = true
+        print("🔄 Starting fetch for page: \(page)")
         delegate?.viewModelDidStartLoading()
 
         service.fetchProducts(page: page, limit: limit, category: category) { [weak self] result in
-            guard let self = self else { return }
+            guard let self = self else {
+                print("❌ Self deallocated before fetch completed.")
+                return
+            }
+
             self.isLoading = false
+
             DispatchQueue.main.async {
                 self.delegate?.viewModelDidEndLoading()
+                print("✅ Finished network call for page: \(page)")
+
                 switch result {
                 case .success(let resp):
-                    if page == 0 { self.products = resp.products }
-                    else { self.products.append(contentsOf: resp.products) }
-                    self.nextPage = resp.nextPage
-                    if self.products.isEmpty { self.delegate?.viewModelNoData() }
-                    else { self.delegate?.viewModelDidUpdateProducts() }
+                    if page == 0 {
+                        self.products = resp.data
+                    } else {
+                        self.products.append(contentsOf: resp.data)
+                    }
+
+                    // Determine nextPage
+                    if resp.pagination.page * resp.pagination.limit < resp.pagination.total {
+                        self.nextPage = resp.pagination.page
+                    } else {
+                        self.nextPage = nil
+                    }
+
+                    if self.products.isEmpty {
+                        self.delegate?.viewModelNoData()
+                    } else {
+                        self.delegate?.viewModelDidUpdateProducts()
+                    }
+
                 case .failure(let err):
+                    print("❌ Failed to fetch products: \(err.localizedDescription)")
                     self.delegate?.viewModelDidFail(with: err)
                 }
             }
