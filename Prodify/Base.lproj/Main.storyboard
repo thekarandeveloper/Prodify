@@ -57,7 +57,7 @@
         <!--Product Detail View Controller-->
         <scene sceneID="L8I-JO-WlD">
             <objects>
-                <viewController id="JZI-zO-6Dg" customClass="ProductDetailViewController" customModule="Prodify" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="productDetails" useStoryboardIdentifierAsRestorationIdentifier="YES" id="JZI-zO-6Dg" customClass="ProductDetailViewController" customModule="Prodify" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="wFx-xd-1A8">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -77,7 +77,10 @@
                                 </prototypes>
                             </tableView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gg1-dE-1MJ">
-                                <rect key="frame" x="16" y="751" width="361" height="85"/>
+                                <rect key="frame" x="16" y="751" width="361" height="71"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="70" id="q73-j4-4eK"/>
+                                </constraints>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="filled" title="Button" cornerStyle="large">
                                     <fontDescription key="titleFontDescription" style="UICTFontTextStyleHeadline"/>
@@ -93,11 +96,14 @@
                             <constraint firstItem="gg1-dE-1MJ" firstAttribute="top" secondItem="R6o-CK-onx" secondAttribute="bottom" constant="16" id="Ion-BC-NLB"/>
                             <constraint firstAttribute="trailing" secondItem="gg1-dE-1MJ" secondAttribute="trailing" constant="16" id="TDQ-RR-ozF"/>
                             <constraint firstItem="mOh-nd-d6q" firstAttribute="bottom" secondItem="R6o-CK-onx" secondAttribute="bottom" id="fEs-tL-DaB"/>
-                            <constraint firstAttribute="bottom" secondItem="gg1-dE-1MJ" secondAttribute="bottom" constant="16" id="n4D-Fk-YEb"/>
+                            <constraint firstAttribute="bottom" secondItem="gg1-dE-1MJ" secondAttribute="bottom" constant="30" id="n4D-Fk-YEb"/>
                             <constraint firstItem="mOh-nd-d6q" firstAttribute="trailing" secondItem="R6o-CK-onx" secondAttribute="trailing" constant="16" id="waU-oe-Qtb"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="Iex-zK-FGJ"/>
+                    <connections>
+                        <outlet property="productDetailsTableView" destination="R6o-CK-onx" id="Hhf-5e-ZCB"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="c5v-eJ-POL" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>

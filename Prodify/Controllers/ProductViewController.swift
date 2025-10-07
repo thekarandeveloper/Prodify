@@ -118,12 +118,16 @@ extension ProductViewController {
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
         tableView.deselectRow(at: indexPath, animated: true)
-        
+
         let product = viewModel.products[indexPath.row]
-        let detail = ProductDetailViewController(product: product)
-        navigationController?.pushViewController(detail, animated: true)
+        
+        // Instantiate from storyboard
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        if let detailVC = storyboard.instantiateViewController(withIdentifier: "productDetails") as? ProductDetailViewController {
+            detailVC.product = product
+            navigationController?.pushViewController(detailVC, animated: true)
+        }
     }
 }
 

@@ -24,7 +24,7 @@ class ProductDetailsTableViewCell: UITableViewCell {
     }
     func configure(with product: Product) {
            productName.text = product.title
-           productCategory.text = product.category
+        productCategory.text = product.category.capitalized
            productDescription.text = product.description
        }
        

@@ -17,11 +17,12 @@ class ProductImageTableViewCell: UITableViewCell {
             super.awakeFromNib()
             // Make image view scale nicely
             productImageView.contentMode = .scaleAspectFill
+            productImageView.layer.cornerRadius = 10
             productImageView.clipsToBounds = true
         }
 
         /// Configure cell with image
-        /// - Parameter image: Either a local UIImage or nil
+        
         func configure(with image: UIImage?) {
             productImageView.image = image
         }
