@@ -12,8 +12,9 @@ class ProductTableViewCell: UITableViewCell {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var descLabel: UILabel!
     @IBOutlet weak var priceLabel: UILabel!
-    @IBOutlet weak var categoryLabel: UIButton!
-
+    @IBOutlet weak var categoryLabel: UILabel!
+    @IBOutlet weak var cardBody: UIView!
+    
     private var imageURL: URL?
 
     required init?(coder: NSCoder) {
@@ -25,7 +26,10 @@ class ProductTableViewCell: UITableViewCell {
         // Make image view rounded or proper content mode
         productImageView.contentMode = .scaleAspectFill
         productImageView.clipsToBounds = true
-
+        productImageView.layer.cornerRadius = 10
+        productImageView.clipsToBounds = true
+        cardBody.layer.cornerRadius = 10
+        
         // Optional: rounded corners for cell
         layer.cornerRadius = 8
         layer.masksToBounds = true
@@ -37,7 +41,7 @@ class ProductTableViewCell: UITableViewCell {
     func configure(with product: Product) {
         titleLabel.text = product.title
         descLabel.text = product.description
-        categoryLabel.setTitle(product.category, for: .normal)
+        categoryLabel.text = product.category
         priceLabel.text = "₹\(product.price)"
 
         // Reset previous image
