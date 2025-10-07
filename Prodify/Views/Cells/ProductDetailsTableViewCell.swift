@@ -25,9 +25,8 @@ class ProductDetailsTableViewCell: UITableViewCell {
     func configure(with product: Product) {
            productName.text = product.title
         productCategory.text = product.category.capitalized
-        let repeatedDescription = Array(repeating: product.description, count: 6).joined(separator: " ")
-           productDescription.text = repeatedDescription
-       }
+        productDescription.text = product.description
+    }
        
        override func prepareForReuse() {
            super.prepareForReuse()
