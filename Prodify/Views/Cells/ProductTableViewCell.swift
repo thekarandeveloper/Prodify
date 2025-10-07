@@ -35,7 +35,7 @@ class ProductTableViewCell: UITableViewCell {
         print("✅ ProductTableViewCell awakeFromNib called")
     }
 
-    func configure(with product: Product) {
+    func configure(with product: Product, useRandomAsset: Bool = true) {
         titleLabel.text = product.title
         descLabel.text = product.description
         categoryLabel.text = product.category.capitalized
@@ -46,27 +46,13 @@ class ProductTableViewCell: UITableViewCell {
         imageURL = nil
 
         // Set image if URL exists
-        if let url = product.image {
-            imageURL = url
-            print("🌐 Loading image from:", url)
-            
-            // Using URLSession directly
-            URLSession.shared.dataTask(with: url) { [weak self] data, _, err in
-                guard let self = self else { return }
-                if let data = data, let img = UIImage(data: data) {
-                    // Ensure this cell is still displaying same URL
-                    if self.imageURL == url {
-                        DispatchQueue.main.async {
-                            self.productImageView.image = img
-                        }
-                    }
-                } else if let err = err {
-                    print("❌ Failed to load image:", err)
-                }
-            }.resume()
+        ImageLoader.shared.loadImage(
+                from: product.image,
+                placeholder: UIImage(named: "placeholder"),
+                showAssetImage: useRandomAsset
+            ) { [weak self] img in
+                self?.productImageView.image = img
         }
-        
-        productImageView.image = UIImage(named: "claude")
         
     }
 

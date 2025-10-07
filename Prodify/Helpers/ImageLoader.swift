@@ -9,31 +9,44 @@ import UIKit
 
 final class ImageLoader {
     static let shared = ImageLoader()
-    private let cache = NSCache<NSURL, UIImage>()
-    private var tasks = [NSURL: URLSessionDataTask]()
+    private var runningRequests = [URL: URLSessionDataTask]()
 
-    func loadImage(from url: URL, completion: @escaping (UIImage?) -> Void) {
-        let ns = url as NSURL
-        if let img = cache.object(forKey: ns) {
-            completion(img); return
+    private init() {}
+
+    func loadImage(from url: URL?,
+                   placeholder: UIImage? = UIImage(named: "placeholder"),
+                   showAssetImage: Bool = false,
+                   completion: @escaping (UIImage?) -> Void) {
+
+        // Random Image Logic
+        if showAssetImage {
+            let randomNumber = Int.random(in: 1...10)
+            let assetImage = UIImage(named: "\(randomNumber)")
+            completion(assetImage)
+            return
         }
-        if tasks[ns] != nil { return } // already loading
 
-        let task = URLSession.shared.dataTask(with: url) { [weak self] data, resp, err in
-            defer { self?.tasks[ns] = nil }
-            guard let data = data, let image = UIImage(data: data) else {
-                DispatchQueue.main.async { completion(nil) }; return
+        // Show placeholder immediately
+        completion(placeholder)
+
+        guard let url = url else { return }
+
+        // Avoid duplicate requests
+        if let _ = runningRequests[url] { return }
+
+        let task = URLSession.shared.dataTask(with: url) { [weak self] data, _, _ in
+            defer { self?.runningRequests.removeValue(forKey: url) }
+            guard let data = data, let image = UIImage(data: data) else { return }
+            DispatchQueue.main.async {
+                completion(image)
             }
-            self?.cache.setObject(image, forKey: ns)
-            DispatchQueue.main.async { completion(image) }
         }
-        tasks[ns] = task
+        runningRequests[url] = task
         task.resume()
     }
 
     func cancelLoading(url: URL) {
-        let ns = url as NSURL
-        tasks[ns]?.cancel()
-        tasks[ns] = nil
+        runningRequests[url]?.cancel()
+        runningRequests.removeValue(forKey: url)
     }
 }
