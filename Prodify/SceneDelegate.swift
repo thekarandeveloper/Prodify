@@ -10,15 +10,92 @@ import UIKit
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
-
-
-    func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
-        // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
-        // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
-        // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
-        guard let _ = (scene as? UIWindowScene) else { return }
-    }
-
+   
+        private weak var noInternetVC: NoInternetViewController?
+        
+        func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
+            guard let windowScene = (scene as? UIWindowScene) else { return }
+            
+            window = UIWindow(windowScene: windowScene)
+            window?.rootViewController = UIStoryboard(name: "Main", bundle: nil)
+                .instantiateViewController(withIdentifier: "rootNavigation")
+            window?.makeKeyAndVisible()
+            
+            setupNetworkMonitoring()
+        }
+        
+        func sceneDidBecomeActive(_ scene: UIScene) {
+            print("🎬 Scene became active - force checking network")
+            // App foreground pe aaye toh force check
+            NetworkMonitor.shared.forceCheck()
+        }
+        
+        private func setupNetworkMonitoring() {
+            NetworkMonitor.shared.onStatusChanged = { [weak self] isConnected in
+                print("🎯 Callback: \(isConnected)")
+                
+                if isConnected {
+                    self?.dismissNoInternet()
+                } else {
+                    self?.showNoInternet()
+                }
+            }
+            
+            // Initial check - with correct status
+            print("🔍 Initial status check: \(NetworkMonitor.shared.isConnected)")
+            if !NetworkMonitor.shared.isConnected {
+                showNoInternet()
+            }
+        }
+        
+        private func showNoInternet() {
+            print("🚫 showNoInternet called")
+            
+            if noInternetVC != nil {
+                print("⚠️ Already showing")
+                return
+            }
+            
+            guard let window = window,
+                  let rootVC = window.rootViewController else {
+                print("❌ No root VC")
+                return
+            }
+            
+            var topVC = rootVC
+            while let presented = topVC.presentedViewController {
+                topVC = presented
+            }
+            
+            guard let vc = UIStoryboard(name: "Main", bundle: nil)
+                .instantiateViewController(withIdentifier: "NoInternetViewController") as? NoInternetViewController else {
+                print("❌ Could not instantiate NoInternetViewController")
+                return
+            }
+            
+            vc.modalPresentationStyle = .fullScreen
+            vc.isModalInPresentation = true
+            
+            noInternetVC = vc
+            
+            topVC.present(vc, animated: true) {
+                print("✅ Presented NoInternetViewController")
+            }
+        }
+        
+        private func dismissNoInternet() {
+            print("✅ dismissNoInternet called")
+            
+            guard let vc = noInternetVC else {
+                print("⚠️ No VC to dismiss")
+                return
+            }
+            
+            vc.dismiss(animated: true) { [weak self] in
+                print("✅ Dismissed NoInternetViewController")
+                self?.noInternetVC = nil
+            }
+        }
     func sceneDidDisconnect(_ scene: UIScene) {
         // Called as the scene is being released by the system.
         // This occurs shortly after the scene enters the background, or when its session is discarded.
@@ -26,10 +103,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // The scene may re-connect later, as its session was not necessarily discarded (see `application:didDiscardSceneSessions` instead).
     }
 
-    func sceneDidBecomeActive(_ scene: UIScene) {
-        // Called when the scene has moved from an inactive state to an active state.
-        // Use this method to restart any tasks that were paused (or not yet started) when the scene was inactive.
-    }
+   
 
     func sceneWillResignActive(_ scene: UIScene) {
         // Called when the scene will move from an active state to an inactive state.
@@ -50,3 +124,20 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
 }
 
+extension UIViewController {
+    func topMostViewController() -> UIViewController {
+        if let presented = presentedViewController {
+            return presented.topMostViewController()
+        }
+        
+        if let navigation = self as? UINavigationController {
+            return navigation.visibleViewController?.topMostViewController() ?? navigation
+        }
+        
+        if let tab = self as? UITabBarController {
+            return tab.selectedViewController?.topMostViewController() ?? tab
+        }
+        
+        return self
+    }
+}
