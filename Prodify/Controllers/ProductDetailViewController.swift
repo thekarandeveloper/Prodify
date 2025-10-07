@@ -9,6 +9,7 @@ import UIKit
 
 class ProductDetailViewController: UIViewController, UITableViewDelegate, UITableViewDataSource{
     var product: Product!
+    @IBOutlet weak var buyButton: UIButton!
     
     @IBOutlet weak var productDetailsTableView: UITableView!
 
@@ -17,7 +18,7 @@ class ProductDetailViewController: UIViewController, UITableViewDelegate, UITabl
         view.backgroundColor = .systemBackground
         title = product.title
         setupTableView()
-        
+        setupButton()
         
     }
 
@@ -27,7 +28,9 @@ class ProductDetailViewController: UIViewController, UITableViewDelegate, UITabl
         productDetailsTableView.register(UINib(nibName: "ProductImageTableViewCell", bundle: nil), forCellReuseIdentifier: "productImage")
         productDetailsTableView.register(UINib(nibName: "ProductDetailsTableViewCell", bundle: nil), forCellReuseIdentifier: "productDetails")
     }
-  
+    private func setupButton(){
+        buyButton.setTitle("Buy \(product.price)", for: .normal)
+    }
 }
 
 extension ProductDetailViewController{

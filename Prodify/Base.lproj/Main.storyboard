@@ -63,7 +63,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="R6o-CK-onx">
-                                <rect key="frame" x="16" y="178" width="361" height="557"/>
+                                <rect key="frame" x="16" y="178" width="361" height="525"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="z2o-9L-HCz">
@@ -77,10 +77,11 @@
                                 </prototypes>
                             </tableView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gg1-dE-1MJ">
-                                <rect key="frame" x="16" y="751" width="361" height="71"/>
+                                <rect key="frame" x="16" y="752" width="361" height="70"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="70" id="q73-j4-4eK"/>
+                                    <constraint firstAttribute="height" constant="70" id="9MC-9B-oEy"/>
                                 </constraints>
+                                <color key="tintColor" systemColor="systemOrangeColor"/>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="filled" title="Button" cornerStyle="large">
                                     <fontDescription key="titleFontDescription" style="UICTFontTextStyleHeadline"/>
@@ -93,15 +94,17 @@
                             <constraint firstItem="R6o-CK-onx" firstAttribute="leading" secondItem="mOh-nd-d6q" secondAttribute="leading" constant="16" id="8CZ-Vr-Re1"/>
                             <constraint firstItem="R6o-CK-onx" firstAttribute="top" secondItem="mOh-nd-d6q" secondAttribute="top" constant="16" id="8Hc-BP-7V6"/>
                             <constraint firstItem="gg1-dE-1MJ" firstAttribute="leading" secondItem="wFx-xd-1A8" secondAttribute="leading" constant="16" id="Cgl-Sv-kcG"/>
-                            <constraint firstItem="gg1-dE-1MJ" firstAttribute="top" secondItem="R6o-CK-onx" secondAttribute="bottom" constant="16" id="Ion-BC-NLB"/>
                             <constraint firstAttribute="trailing" secondItem="gg1-dE-1MJ" secondAttribute="trailing" constant="16" id="TDQ-RR-ozF"/>
-                            <constraint firstItem="mOh-nd-d6q" firstAttribute="bottom" secondItem="R6o-CK-onx" secondAttribute="bottom" id="fEs-tL-DaB"/>
+                            <constraint firstItem="mOh-nd-d6q" firstAttribute="bottom" secondItem="R6o-CK-onx" secondAttribute="bottom" constant="32" id="fEs-tL-DaB"/>
                             <constraint firstAttribute="bottom" secondItem="gg1-dE-1MJ" secondAttribute="bottom" constant="30" id="n4D-Fk-YEb"/>
                             <constraint firstItem="mOh-nd-d6q" firstAttribute="trailing" secondItem="R6o-CK-onx" secondAttribute="trailing" constant="16" id="waU-oe-Qtb"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="Iex-zK-FGJ"/>
+                    <navigationItem key="navigationItem" id="Iex-zK-FGJ">
+                        <barButtonItem key="rightBarButtonItem" title="Item" image="square.and.arrow.up" catalog="system" id="kcy-np-Vep"/>
+                    </navigationItem>
                     <connections>
+                        <outlet property="buyButton" destination="gg1-dE-1MJ" id="zBQ-Qe-97u"/>
                         <outlet property="productDetailsTableView" destination="R6o-CK-onx" id="Hhf-5e-ZCB"/>
                     </connections>
                 </viewController>
@@ -131,8 +134,12 @@
     <resources>
         <image name="bell.fill" catalog="system" width="123" height="128"/>
         <image name="person.circle.fill" catalog="system" width="128" height="123"/>
+        <image name="square.and.arrow.up" catalog="system" width="110" height="128"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemOrangeColor">
+            <color red="1" green="0.58431372550000005" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>
