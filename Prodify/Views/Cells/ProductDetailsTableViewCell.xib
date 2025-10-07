@@ -36,7 +36,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Description" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OV5-db-fnh">
-                                <rect key="frame" x="10" y="68.666666666666671" width="310" height="10"/>
+                                <rect key="frame" x="10" y="78.666666666666671" width="310" height="10"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="10" id="JtF-1Z-fgI"/>
                                 </constraints>
@@ -45,7 +45,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="Label" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="akP-hw-T6h">
-                                <rect key="frame" x="10" y="83.666666666666671" width="300" height="20.333333333333329"/>
+                                <rect key="frame" x="10" y="93.666666666666671" width="300" height="20.333333333333329"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -53,10 +53,9 @@
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="OV5-db-fnh" firstAttribute="top" secondItem="qVx-XY-9FU" secondAttribute="bottom" constant="10" id="3wf-Rx-2k4"/>
+                            <constraint firstItem="OV5-db-fnh" firstAttribute="top" secondItem="qVx-XY-9FU" secondAttribute="bottom" constant="20" id="3wf-Rx-2k4"/>
                             <constraint firstAttribute="trailing" secondItem="OV5-db-fnh" secondAttribute="trailing" id="6sK-IK-tdo"/>
                             <constraint firstAttribute="trailing" secondItem="Fwo-pl-Hbh" secondAttribute="trailing" constant="10" id="7OF-Cs-Pqd"/>
-                            <constraint firstItem="OV5-db-fnh" firstAttribute="top" secondItem="qVx-XY-9FU" secondAttribute="bottom" constant="10" id="8uK-JL-sVA"/>
                             <constraint firstAttribute="trailing" secondItem="qVx-XY-9FU" secondAttribute="trailing" constant="10" id="Gcs-iM-f5T"/>
                             <constraint firstAttribute="trailing" secondItem="akP-hw-T6h" secondAttribute="trailing" constant="10" id="Ke2-Y6-8BG"/>
                             <constraint firstItem="Fwo-pl-Hbh" firstAttribute="leading" secondItem="QMQ-4s-sNP" secondAttribute="leading" constant="10" id="Mbw-lI-S4z"/>

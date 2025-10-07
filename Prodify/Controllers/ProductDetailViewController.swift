@@ -29,7 +29,7 @@ class ProductDetailViewController: UIViewController, UITableViewDelegate, UITabl
         productDetailsTableView.register(UINib(nibName: "ProductDetailsTableViewCell", bundle: nil), forCellReuseIdentifier: "productDetails")
     }
     private func setupButton(){
-        buyButton.setTitle("Buy \(product.price)", for: .normal)
+        buyButton.setTitle("Buy $\(product.price)", for: .normal)
     }
 }
 
@@ -51,11 +51,7 @@ extension ProductDetailViewController{
                 return UITableViewCell()
             }
             
-            if let url = product.image {
-                cell.configure(product:product)
-            } else {
-                cell.configure(with: UIImage(named: "claude"))
-            }
+            cell.configure(product:product)
             
             return cell
             
