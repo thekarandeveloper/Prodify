@@ -26,7 +26,6 @@ class ProductTableViewCell: UITableViewCell {
         // Make image view rounded or proper content mode
         productImageView.layer.cornerRadius = 10
         productImageView.clipsToBounds = true
-        cardBody.layer.cornerRadius = 10
         
         // Optional: rounded corners for cell
         layer.cornerRadius = 8
