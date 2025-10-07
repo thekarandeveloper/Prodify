@@ -31,8 +31,6 @@ class ProductTableViewCell: UITableViewCell {
         layer.cornerRadius = 8
         layer.masksToBounds = true
 
-        // Debug
-        print("✅ ProductTableViewCell awakeFromNib called")
     }
 
     func configure(with product: Product, useRandomAsset: Bool = true) {

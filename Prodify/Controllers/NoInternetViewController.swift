@@ -34,11 +34,10 @@ class NoInternetViewController: UIViewController {
              monitor.pathUpdateHandler = { [weak self] path in
                  DispatchQueue.main.async {
                      if path.status == .satisfied {
-                         print("✅ Internet is back")
+                         print("Internet is back")
                          self?.internetRestored()
                      } else {
-                         print("❌ Still no internet")
-                         // Keep activity indicator running
+                         print("Still no internet")
                      }
                  }
              }

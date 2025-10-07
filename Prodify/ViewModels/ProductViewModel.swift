@@ -52,17 +52,17 @@ final class ProductsViewModel {
     // MARK: - Private Load Function
     private func load(page: Int) {
         guard !isLoading else {
-            print("⚠️ Already loading, skipping page \(page)")
+            print("Already loading, skipping page \(page)")
             return
         }
         
         isLoading = true
-        print("🔄 Starting fetch for page: \(page)")
+        print("Starting fetch for page: \(page)")
         delegate?.viewModelDidStartLoading()
         
         service.fetchProducts(page: page, limit: limit, category: category) { [weak self] result in
             guard let self = self else {
-                print("❌ Self deallocated before fetch completed.")
+                print("Self deallocated before fetch completed.")
                 return
             }
             
@@ -70,7 +70,7 @@ final class ProductsViewModel {
             
             DispatchQueue.main.async {
                 self.delegate?.viewModelDidEndLoading()
-                print("✅ Finished network call for page: \(page)")
+                print("Finished network call for page: \(page)")
                 
                 switch result {
                     
@@ -93,16 +93,16 @@ final class ProductsViewModel {
                     // Update UI via delegate
                     if self.products.isEmpty {
                         self.delegate?.viewModelNoData()
-                        print("⚠️ No products found.")
+                        print("No products found.")
                     } else {
                         self.delegate?.viewModelDidUpdateProducts()
-                        print("📦 Total products loaded:", self.products.count)
+                        print("Total products loaded:", self.products.count)
                     }
                     
                 case .failure(let apiError):
                     // Pass error to delegate
                     self.delegate?.viewModelDidFail(with: apiError)
-                    print("❌ Failed to fetch products:", apiError.localizedDescription)
+                    print("Failed to fetch products:", apiError.localizedDescription)
                 }
             }
         }

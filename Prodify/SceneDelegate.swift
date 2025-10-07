@@ -25,14 +25,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         }
         
         func sceneDidBecomeActive(_ scene: UIScene) {
-            print("🎬 Scene became active - force checking network")
+            print("Scene became active - force checking network")
             // App foreground pe aaye toh force check
             NetworkMonitor.shared.forceCheck()
         }
         
         private func setupNetworkMonitoring() {
             NetworkMonitor.shared.onStatusChanged = { [weak self] isConnected in
-                print("🎯 Callback: \(isConnected)")
+                print("Callback: \(isConnected)")
                 
                 if isConnected {
                     self?.dismissNoInternet()
@@ -42,23 +42,21 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             }
             
             // Initial check - with correct status
-            print("🔍 Initial status check: \(NetworkMonitor.shared.isConnected)")
+            print("Initial status check: \(NetworkMonitor.shared.isConnected)")
             if !NetworkMonitor.shared.isConnected {
                 showNoInternet()
             }
         }
         
         private func showNoInternet() {
-            print("🚫 showNoInternet called")
+            print("showNoInternet called")
             
             if noInternetVC != nil {
-                print("⚠️ Already showing")
                 return
             }
             
             guard let window = window,
                   let rootVC = window.rootViewController else {
-                print("❌ No root VC")
                 return
             }
             
@@ -69,7 +67,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             
             guard let vc = UIStoryboard(name: "Main", bundle: nil)
                 .instantiateViewController(withIdentifier: "NoInternetViewController") as? NoInternetViewController else {
-                print("❌ Could not instantiate NoInternetViewController")
+                print("Could not instantiate NoInternetViewController")
                 return
             }
             
@@ -79,20 +77,18 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             noInternetVC = vc
             
             topVC.present(vc, animated: true) {
-                print("✅ Presented NoInternetViewController")
+                print("Presented NoInternetViewController")
             }
         }
         
         private func dismissNoInternet() {
-            print("✅ dismissNoInternet called")
-            
+
             guard let vc = noInternetVC else {
-                print("⚠️ No VC to dismiss")
+                print("No VC to dismiss")
                 return
             }
             
             vc.dismiss(animated: true) { [weak self] in
-                print("✅ Dismissed NoInternetViewController")
                 self?.noInternetVC = nil
             }
         }

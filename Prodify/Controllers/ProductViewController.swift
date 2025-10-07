@@ -57,6 +57,7 @@ class ProductViewController: UIViewController, UITableViewDelegate, UITableViewD
         footerSpinner.frame = CGRect(x: 0, y: 0, width: productTableView.bounds.width, height: 44)
     }
     private func setupNavigationBarMenu() {
+        
         // Use SF Symbol for ellipsis
         let ellipsisImage = UIImage(systemName: "ellipsis.circle")
         

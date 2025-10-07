@@ -26,7 +26,7 @@ class NetworkMonitor {
     }
     
     private func startMonitoring() {
-        print("🔄 Starting/Restarting monitor")
+        print("Starting monitor")
         
         // Cancel old monitor
         monitor?.cancel()
@@ -37,7 +37,7 @@ class NetworkMonitor {
         
         // Get initial status
         isConnected = newMonitor.currentPath.status != .unsatisfied
-        print("🎬 Initial status: \(isConnected)")
+        print("Initial status: \(isConnected)")
         
         newMonitor.pathUpdateHandler = { [weak self] path in
             guard let self = self else { return }
@@ -46,10 +46,10 @@ class NetworkMonitor {
             
             let connected = path.status == .satisfied
             
-            print("📡 Network update:")
-            print("   Status: \(path.status)")
-            print("   Connected: \(connected)")
-            print("   Interfaces: \(path.availableInterfaces.count)")
+            print("Network update:")
+            print("Status: \(path.status)")
+            print("Connected: \(connected)")
+            print("Interfaces: \(path.availableInterfaces.count)")
             
             // List interfaces
             for interface in path.availableInterfaces {
@@ -58,17 +58,17 @@ class NetworkMonitor {
             
             DispatchQueue.main.async {
                 if self.isConnected != connected {
-                    print("🔄 Status CHANGED: \(self.isConnected) → \(connected)")
+                    print("Status CHANGED: \(self.isConnected) → \(connected)")
                     self.isConnected = connected
                     self.onStatusChanged?(connected)
                 } else {
-                    print("⚪ Status same: \(connected)")
+                    print("Status same: \(connected)")
                 }
             }
         }
         
         newMonitor.start(queue: queue)
-        print("✅ Monitor started")
+        print("Monitor started")
     }
     
     // Detect if monitor is stuck
@@ -79,14 +79,14 @@ class NetworkMonitor {
             // If no updates in 10 seconds, restart
             let timeSinceUpdate = Date().timeIntervalSince(self.lastUpdateTime)
             if timeSinceUpdate > 10 {
-                print("⚠️ Monitor stuck! Restarting...")
+                print("Monitor stuck! Restarting...")
                 self.restartMonitor()
             }
         }
     }
     
     private func restartMonitor() {
-        print("🔄 Restarting monitor due to stuck state")
+        print("Restarting monitor due to stuck state")
         startMonitoring()
         
         // Force check after restart
@@ -101,7 +101,7 @@ class NetworkMonitor {
         let currentPath = monitor.currentPath
         let connected = currentPath.status == .satisfied
         
-        print("🔍 Force check:")
+        print("Force check:")
         print("   Current path status: \(currentPath.status)")
         print("   Connected: \(connected)")
         print("   Interfaces: \(currentPath.availableInterfaces.count)")
@@ -109,7 +109,7 @@ class NetworkMonitor {
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
             if self.isConnected != connected {
-                print("🔄 Force changed: \(self.isConnected) → \(connected)")
+                print("Force changed: \(self.isConnected) → \(connected)")
                 self.isConnected = connected
                 self.onStatusChanged?(connected)
             }

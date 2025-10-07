@@ -20,7 +20,7 @@ final class ImageLoader {
 
         // Random Image Logic
         if showAssetImage {
-            let index = (id % 10) + 1    // IDs 0..n -> 1..10
+            let index = (id % 10) + 1   
             let assetImage = UIImage(named: "\(index).png")
             completion(assetImage)
             return

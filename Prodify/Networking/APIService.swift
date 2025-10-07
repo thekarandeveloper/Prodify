@@ -51,7 +51,7 @@ final class APIService: APIServiceProtocol {
     func fetchProducts(page: Int, limit: Int, category: String,
                        completion: @escaping (Result<ProductResponse, APIError>) -> Void) {
         
-        print("🔄 Fetching products page: \(page), limit: \(limit), category: \(category)")
+        print("Fetching products page: \(page), limit: \(limit), category: \(category)")
         
         // Build URL
         var comps = URLComponents(string: baseURL)!
@@ -66,7 +66,7 @@ final class APIService: APIServiceProtocol {
             return
         }
         
-        print("🌐 Request URL: \(url.absoluteString)")
+        print("Request URL: \(url.absoluteString)")
         
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
@@ -75,40 +75,40 @@ final class APIService: APIServiceProtocol {
             
             // Network error
             if let error = error {
-                print("🚫 Network Error: \(error.localizedDescription)")
+                print("Network Error: \(error.localizedDescription)")
                 completion(.failure(.network(error)))
                 return
             }
             
             // HTTP response
             guard let httpResponse = response as? HTTPURLResponse else {
-                print("⚠️ No HTTP response")
+                print("No HTTP response")
                 completion(.failure(.noResponse))
                 return
             }
             
-            print("📡 Status Code: \(httpResponse.statusCode)")
+            print("Status Code: \(httpResponse.statusCode)")
             
             guard (200..<300).contains(httpResponse.statusCode), let data = data else {
-                print("❌ Bad response or missing data")
+                print("Bad response or missing data")
                 completion(.failure(.server(httpResponse.statusCode)))
                 return
             }
             
-            print("📦 Received data (\(data.count) bytes)")
+            print("Received data (\(data.count) bytes)")
             
             // Optional: debug JSON string
             if let jsonString = String(data: data, encoding: .utf8) {
-                print("🧾 JSON Response:\n\(jsonString)")
+                print("JSON Response:\n\(jsonString)")
             }
             
             // Decode
             do {
                 let decoded = try JSONDecoder().decode(ProductResponse.self, from: data)
-                print("✅ Decoded \(decoded.data.count) products successfully")
+                print("Decoded \(decoded.data.count) products successfully")
                 completion(.success(decoded))
             } catch let decodeError {
-                print("❌ Decoding failed: \(decodeError.localizedDescription)")
+                print("Decoding failed: \(decodeError.localizedDescription)")
                 completion(.failure(.decoding(decodeError)))
             }
         }
