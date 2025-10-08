@@ -8,12 +8,17 @@
 import UIKit
 
 class ProductDetailViewController: UIViewController, UITableViewDelegate, UITableViewDataSource{
+    
+    // MARK: - Outlets
+    @IBOutlet weak var buyButton: UIButton!
+    @IBOutlet weak var productDetailsTableView: UITableView!
+    
+    
+    // MARK: - Properties
     var product: Product!
     var shouldShowLocalAsset: Bool = false
-    @IBOutlet weak var buyButton: UIButton!
     
-    @IBOutlet weak var productDetailsTableView: UITableView!
-
+    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
@@ -22,7 +27,8 @@ class ProductDetailViewController: UIViewController, UITableViewDelegate, UITabl
         setupButton()
         
     }
-
+    
+    // MARK: - Setup Methods
     private func setupTableView() {
         productDetailsTableView.dataSource = self
         productDetailsTableView.delegate = self
@@ -34,6 +40,7 @@ class ProductDetailViewController: UIViewController, UITableViewDelegate, UITabl
     }
 }
 
+// MARK: - UITableViewDataSource & UITableViewDelegate
 extension ProductDetailViewController{
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1

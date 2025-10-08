@@ -8,27 +8,34 @@
 import UIKit
 
 class ProductViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+    
+    
+    // MARK: - Outlets
     @IBOutlet weak var productTableView: UITableView!
+    
+    
+    // MARK: - ViewModel & Data
+    
     private let viewModel = ProductsViewModel()
+    private var filteredProducts: [Product] = []
+    private var useRandomAssetImages: Bool = false {
+        didSet { productTableView.reloadData() }
+    }
+    
+    
+    // MARK: - UI Components
     private let spinner = UIActivityIndicatorView(style: .large)
     private let footerSpinner = UIActivityIndicatorView(style: .medium)
     private let noDataLabel = UILabel()
     private let errorView = UIView()
-    var useRandomAssetImages: Bool = false {
-        didSet {
-            // Reload the table view whenever the flag changes
-            productTableView.reloadData()
-        }
+    
+    // MARK: - Search
+    private let searchController = UISearchController(searchResultsController: nil)
+    private var isSearching: Bool {
+        return searchController.isActive && !(searchController.searchBar.text?.isEmpty ?? true)
     }
-    // Search bar
     
-        private let searchController = UISearchController(searchResultsController: nil)
-        
-        private var filteredProducts: [Product] = []
-        private var isSearching: Bool {
-            return searchController.isActive && !(searchController.searchBar.text?.isEmpty ?? true)
-        }
-    
+    // MARK: - Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,14 +48,12 @@ class ProductViewController: UIViewController, UITableViewDelegate, UITableViewD
         viewModel.loadInitial()
         print("Loaded products: \(viewModel.products.count)")
     }
-    private func setupSearchController() {
-        searchController.searchResultsUpdater = self
-        searchController.obscuresBackgroundDuringPresentation = false
-        searchController.searchBar.placeholder = "Search products"
-        navigationItem.searchController = searchController
-        definesPresentationContext = true
+    @objc private func retryTapped() {
+        errorView.removeFromSuperview()
+        viewModel.loadInitial()
     }
-    func setupTable() {
+    // MARK: - Setup Functions
+    private func setupTable() {
         productTableView.dataSource = self
         productTableView.delegate = self
         productTableView.rowHeight = UITableView.automaticDimension
@@ -56,6 +61,33 @@ class ProductViewController: UIViewController, UITableViewDelegate, UITableViewD
         productTableView.estimatedRowHeight = 100
         footerSpinner.frame = CGRect(x: 0, y: 0, width: productTableView.bounds.width, height: 44)
     }
+    private func setupSpinnerAndNoData() {
+        spinner.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(spinner)
+        NSLayoutConstraint.activate([
+            spinner.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            spinner.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+        ])
+        
+        noDataLabel.text = "No products found"
+        noDataLabel.textAlignment = .center
+        noDataLabel.isHidden = true
+        noDataLabel.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(noDataLabel)
+        NSLayoutConstraint.activate([
+            noDataLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            noDataLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+        ])
+    }
+    
+    private func setupSearchController() {
+        searchController.searchResultsUpdater = self
+        searchController.obscuresBackgroundDuringPresentation = false
+        searchController.searchBar.placeholder = "Search products"
+        navigationItem.searchController = searchController
+        definesPresentationContext = true
+    }
+    
     private func setupNavigationBarMenu() {
         
         // Use SF Symbol for ellipsis
@@ -77,25 +109,7 @@ class ProductViewController: UIViewController, UITableViewDelegate, UITableViewD
                                                             action: nil)
         navigationItem.rightBarButtonItem?.menu = menu
     }
-    private func setupSpinnerAndNoData() {
-        spinner.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(spinner)
-        NSLayoutConstraint.activate([
-            spinner.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            spinner.centerYAnchor.constraint(equalTo: view.centerYAnchor)
-        ])
-
-        noDataLabel.text = "No products found"
-        noDataLabel.textAlignment = .center
-        noDataLabel.isHidden = true
-        noDataLabel.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(noDataLabel)
-        NSLayoutConstraint.activate([
-            noDataLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            noDataLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor)
-        ])
-    }
-
+    
     private func showError(_ message: String) {
         let errView = UIView(frame: view.bounds)
         errView.backgroundColor = .systemBackground
@@ -114,7 +128,7 @@ class ProductViewController: UIViewController, UITableViewDelegate, UITableViewD
             label.centerYAnchor.constraint(equalTo: errView.centerYAnchor, constant: -20),
             label.leadingAnchor.constraint(equalTo: errView.leadingAnchor, constant: 24),
             label.trailingAnchor.constraint(equalTo: errView.trailingAnchor, constant: -24),
-
+            
             btn.topAnchor.constraint(equalTo: label.bottomAnchor, constant: 12),
             btn.centerXAnchor.constraint(equalTo: errView.centerXAnchor)
         ])
@@ -124,23 +138,21 @@ class ProductViewController: UIViewController, UITableViewDelegate, UITableViewD
         errView.tag = 999
         errorView.addSubview(errView)
     }
-
-    @objc private func retryTapped() {
-        errorView.removeFromSuperview()
-        viewModel.loadInitial()
-    }
+    
+    
 }
 
+// MARK: - UITableView DataSource
 extension ProductViewController {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return isSearching ? filteredProducts.count : viewModel.products.count
     }
-
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "ProductCell", for: indexPath) as? ProductTableViewCell else {
             return UITableViewCell()
         }
-
+        
         let product = isSearching ? filteredProducts[indexPath.row] : viewModel.products[indexPath.row]
         cell.configure(with: product, useRandomAsset: useRandomAssetImages)
         return cell
@@ -149,21 +161,22 @@ extension ProductViewController {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableView.automaticDimension
     }
-
+    
     
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
         return 120
     }
 }
 
+// MARK: - UITableView Delegate
 extension ProductViewController {
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         viewModel.loadNextIfNeeded(currentIndex: indexPath.row)
     }
-
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-
+        
         let product = viewModel.products[indexPath.row]
         
         // Instantiate from storyboard
@@ -176,6 +189,7 @@ extension ProductViewController {
     }
 }
 
+// MARK: - ProductsViewModelDelegate
 extension ProductViewController: ProductsViewModelDelegate {
     func viewModelDidStartLoading() {
         if viewModel.products.isEmpty {
@@ -206,6 +220,7 @@ extension ProductViewController: ProductsViewModelDelegate {
     }
 }
 
+// MARK: - UISearchResultsUpdating
 extension ProductViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
         guard let text = searchController.searchBar.text?.lowercased(), !text.isEmpty else {
