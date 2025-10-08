@@ -170,6 +170,7 @@ extension ProductViewController {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         if let detailVC = storyboard.instantiateViewController(withIdentifier: "productDetails") as? ProductDetailViewController {
             detailVC.product = product
+            detailVC.shouldShowLocalAsset = useRandomAssetImages
             navigationController?.pushViewController(detailVC, animated: true)
         }
     }

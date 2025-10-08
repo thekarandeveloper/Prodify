@@ -9,6 +9,7 @@ import UIKit
 
 class ProductDetailViewController: UIViewController, UITableViewDelegate, UITableViewDataSource{
     var product: Product!
+    var shouldShowLocalAsset: Bool = false
     @IBOutlet weak var buyButton: UIButton!
     
     @IBOutlet weak var productDetailsTableView: UITableView!
@@ -51,7 +52,7 @@ extension ProductDetailViewController{
                 return UITableViewCell()
             }
             
-            cell.configure(product:product)
+            cell.configure(product:product, showLocalAsset: shouldShowLocalAsset)
             
             return cell
             

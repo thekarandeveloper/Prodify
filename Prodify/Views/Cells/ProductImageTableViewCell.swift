@@ -28,13 +28,13 @@ class ProductImageTableViewCell: UITableViewCell {
         }
 
         /// Configure cell with image URL (async load)
-    func configure(product: Product) {
+    func configure(product: Product, showLocalAsset: Bool = false) {
         productImageView.image = nil
         imageURL = product.image
 
         // Determine placeholder deterministically
-        var placeholder: UIImage? = nil
-        if true {
+        var placeholder: UIImage? = UIImage(named: "placeholder")
+        if showLocalAsset {
             let index = (product.id % 10) + 1    // IDs 0..n -> 1..10
             placeholder = UIImage(named: "\(index).png")
         }
@@ -42,7 +42,7 @@ class ProductImageTableViewCell: UITableViewCell {
         ImageLoader.shared.loadImage(
             id: product.id, from: product.image,
             placeholder: placeholder,
-            showAssetImage: false // placeholder already set
+            showAssetImage: false
         ) { [weak self] img in
             self?.productImageView.image = img
         }

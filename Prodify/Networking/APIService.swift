@@ -3,13 +3,7 @@
 //  Prodify
 //
 //  Created by Karan Kumar on 07/10/25.
-//
-//
-//  APIService.swift
-//  Prodify
-//
-//  Created by Karan Kumar on 07/10/25.
-//
+
 
 import Foundation
 

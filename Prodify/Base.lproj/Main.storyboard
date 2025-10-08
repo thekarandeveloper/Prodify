@@ -40,10 +40,7 @@
                         </constraints>
                     </view>
                     <toolbarItems/>
-                    <navigationItem key="navigationItem" largeTitleDisplayMode="always" id="Gso-Zh-4Ct">
-                        <barButtonItem key="leftBarButtonItem" title="Item" image="person.circle.fill" catalog="system" id="bzz-U5-bWa"/>
-                        <barButtonItem key="rightBarButtonItem" title="Item" image="bell.fill" catalog="system" id="yn1-zH-I9I"/>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" largeTitleDisplayMode="always" id="Gso-Zh-4Ct"/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="productTableView" destination="aZP-wH-BhV" id="qqa-yv-Gfl"/>
@@ -100,9 +97,7 @@
                             <constraint firstItem="mOh-nd-d6q" firstAttribute="trailing" secondItem="R6o-CK-onx" secondAttribute="trailing" constant="16" id="waU-oe-Qtb"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="Iex-zK-FGJ">
-                        <barButtonItem key="rightBarButtonItem" title="Item" image="square.and.arrow.up" catalog="system" id="kcy-np-Vep"/>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" id="Iex-zK-FGJ"/>
                     <connections>
                         <outlet property="buyButton" destination="gg1-dE-1MJ" id="zBQ-Qe-97u"/>
                         <outlet property="productDetailsTableView" destination="R6o-CK-onx" id="Hhf-5e-ZCB"/>
@@ -184,10 +179,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="bell.fill" catalog="system" width="123" height="128"/>
         <image name="noInternet" width="2000" height="2000"/>
-        <image name="person.circle.fill" catalog="system" width="128" height="123"/>
-        <image name="square.and.arrow.up" catalog="system" width="110" height="128"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

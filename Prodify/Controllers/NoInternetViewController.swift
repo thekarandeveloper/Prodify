@@ -17,7 +17,7 @@ class NoInternetViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        title = "No Internet"
         view.backgroundColor = .systemBackground
         
         // Setup activity indicator

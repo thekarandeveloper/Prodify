@@ -71,7 +71,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 return
             }
             
-            vc.modalPresentationStyle = .fullScreen
+            vc.modalPresentationStyle = .formSheet
             vc.isModalInPresentation = true
             
             noInternetVC = vc

@@ -99,7 +99,7 @@ class NetworkMonitor {
         guard let monitor = monitor else { return }
         
         let currentPath = monitor.currentPath
-        let connected = currentPath.status == .satisfied
+        let connected = currentPath.status != .unsatisfied
         
         print("Force check:")
         print("   Current path status: \(currentPath.status)")
