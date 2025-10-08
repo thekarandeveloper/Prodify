@@ -83,9 +83,10 @@ final class ProductsViewModel {
                     }
                     
                     // Determine nextPage
-                    let totalLoaded = (response.pagination.page) * response.pagination.limit
+                    let totalLoaded = (response.pagination.page + 1) * response.pagination.limit
+                    
                     if totalLoaded < response.pagination.total {
-                        self.nextPage = response.pagination.page
+                        self.nextPage = response.pagination.page + 1
                     } else {
                         self.nextPage = nil
                     }
