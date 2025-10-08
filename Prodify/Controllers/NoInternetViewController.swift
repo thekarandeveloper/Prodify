@@ -12,13 +12,13 @@ class NoInternetViewController: UIViewController {
     
     // MARK: - Properties
     private let monitor = NWPathMonitor()
-    private let queue = DispatchQueue(label: "InternetMonitor")
+    private let queue = DispatchQueue(label: ContentManager.shared.messages.taskQueueLabel)
     private let activityIndicator = UIActivityIndicatorView(style: .large)
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "No Internet"
+        title = ContentManager.shared.messages.noInternet
         view.backgroundColor = .systemBackground
         setupActivtiyIndicator()
     }
@@ -45,10 +45,10 @@ class NoInternetViewController: UIViewController {
         monitor.pathUpdateHandler = { [weak self] path in
             DispatchQueue.main.async {
                 if path.status == .satisfied {
-                    print("Internet is back")
+                    print(ContentManager.shared.messages.internetIsBack)
                     self?.internetRestored()
                 } else {
-                    print("Still no internet")
+                    print(ContentManager.shared.messages.noInternet)
                 }
             }
         }

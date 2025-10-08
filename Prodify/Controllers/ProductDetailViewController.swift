@@ -32,11 +32,11 @@ class ProductDetailViewController: UIViewController, UITableViewDelegate, UITabl
     private func setupTableView() {
         productDetailsTableView.dataSource = self
         productDetailsTableView.delegate = self
-        productDetailsTableView.register(UINib(nibName: "ProductImageTableViewCell", bundle: nil), forCellReuseIdentifier: "productImage")
-        productDetailsTableView.register(UINib(nibName: "ProductDetailsTableViewCell", bundle: nil), forCellReuseIdentifier: "productDetails")
+        productDetailsTableView.register(UINib(nibName: ContentManager.shared.nibs.ProductImageTableViewCell, bundle: nil), forCellReuseIdentifier: ContentManager.shared.reuse.imageCell)
+        productDetailsTableView.register(UINib(nibName: ContentManager.shared.nibs.ProductDetailsTableViewCell, bundle: nil), forCellReuseIdentifier: ContentManager.shared.reuse.detailsCell)
     }
     private func setupButton(){
-        buyButton.setTitle("Buy $\(product.price)", for: .normal)
+        buyButton.setTitle("\(ContentManager.shared.titles.buyButtonPrefix)\(product.price)", for: .normal)
     }
 }
 
@@ -55,7 +55,7 @@ extension ProductDetailViewController{
         if indexPath.row == 0 {
             
             // Image cell
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: "productImage", for: indexPath) as? ProductImageTableViewCell else {
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: ContentManager.shared.reuse.imageCell, for: indexPath) as? ProductImageTableViewCell else {
                 return UITableViewCell()
             }
             
@@ -66,7 +66,7 @@ extension ProductDetailViewController{
         } else {
             
             // Details cell
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: "productDetails", for: indexPath) as? ProductDetailsTableViewCell else {
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: ContentManager.shared.reuse.detailsCell, for: indexPath) as? ProductDetailsTableViewCell else {
                 return UITableViewCell()
             }
             cell.configure(with: product)

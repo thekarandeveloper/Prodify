@@ -54,7 +54,7 @@
         <!--Product Detail View Controller-->
         <scene sceneID="L8I-JO-WlD">
             <objects>
-                <viewController storyboardIdentifier="productDetails" useStoryboardIdentifierAsRestorationIdentifier="YES" id="JZI-zO-6Dg" customClass="ProductDetailViewController" customModule="Prodify" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ProductDetails" useStoryboardIdentifierAsRestorationIdentifier="YES" id="JZI-zO-6Dg" customClass="ProductDetailViewController" customModule="Prodify" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="wFx-xd-1A8">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

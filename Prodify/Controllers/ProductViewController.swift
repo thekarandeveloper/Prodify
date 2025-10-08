@@ -39,14 +39,13 @@ class ProductViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "Prodify"
+        title = ContentManager.shared.titles.appName
         setupTable()
         setupSpinnerAndNoData()
         setupSearchController()
         setupNavigationBarMenu()
         viewModel.delegate = self
         viewModel.loadInitial()
-        print("Loaded products: \(viewModel.products.count)")
     }
     @objc private func retryTapped() {
         errorView.removeFromSuperview()
@@ -57,7 +56,7 @@ class ProductViewController: UIViewController, UITableViewDelegate, UITableViewD
         productTableView.dataSource = self
         productTableView.delegate = self
         productTableView.rowHeight = UITableView.automaticDimension
-        productTableView.register(UINib(nibName: "ProductTableViewCell", bundle: nil), forCellReuseIdentifier: "ProductCell")
+        productTableView.register(UINib(nibName:  ContentManager.shared.nibs.ProductTableViewCell, bundle: nil), forCellReuseIdentifier:  ContentManager.shared.reuse.productCell)
         productTableView.estimatedRowHeight = 100
         footerSpinner.frame = CGRect(x: 0, y: 0, width: productTableView.bounds.width, height: 44)
     }
@@ -69,7 +68,7 @@ class ProductViewController: UIViewController, UITableViewDelegate, UITableViewD
             spinner.centerYAnchor.constraint(equalTo: view.centerYAnchor)
         ])
         
-        noDataLabel.text = "No products found"
+        noDataLabel.text =  ContentManager.shared.messages.noProductFound
         noDataLabel.textAlignment = .center
         noDataLabel.isHidden = true
         noDataLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -83,7 +82,7 @@ class ProductViewController: UIViewController, UITableViewDelegate, UITableViewD
     private func setupSearchController() {
         searchController.searchResultsUpdater = self
         searchController.obscuresBackgroundDuringPresentation = false
-        searchController.searchBar.placeholder = "Search products"
+        searchController.searchBar.placeholder =  ContentManager.shared.titles.searchPlaceholder
         navigationItem.searchController = searchController
         definesPresentationContext = true
     }
@@ -91,10 +90,10 @@ class ProductViewController: UIViewController, UITableViewDelegate, UITableViewD
     private func setupNavigationBarMenu() {
         
         // Use SF Symbol for ellipsis
-        let ellipsisImage = UIImage(systemName: "ellipsis.circle")
+        let ellipsisImage =  ContentManager.shared.images.ellipsis
         
         // Menu toggle action
-        let toggleAction = UIAction(title: "Show Local Images") { [weak self] _ in
+        let toggleAction = UIAction(title:  ContentManager.shared.titles.showLocalImages) { [weak self] _ in
             guard let self = self else { return }
             self.useRandomAssetImages.toggle()
             self.setupNavigationBarMenu() // refresh menu so the switch reflects state
@@ -102,7 +101,7 @@ class ProductViewController: UIViewController, UITableViewDelegate, UITableViewD
         
         toggleAction.state = useRandomAssetImages ? .on : .off
         
-        let menu = UIMenu(title: "", options: .displayInline, children: [toggleAction])
+        let menu = UIMenu(title: ContentManager.shared.titles.localImageToggleMenu, options: .displayInline, children: [toggleAction])
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: ellipsisImage,
                                                             style: .plain,
                                                             target: nil,
@@ -119,7 +118,7 @@ class ProductViewController: UIViewController, UITableViewDelegate, UITableViewD
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
         let btn = UIButton(type: .system)
-        btn.setTitle("Retry", for: .normal)
+        btn.setTitle(ContentManager.shared.messages.retry, for: .normal)
         btn.addTarget(self, action: #selector(retryTapped), for: .touchUpInside)
         btn.translatesAutoresizingMaskIntoConstraints = false
         errView.addSubview(label); errView.addSubview(btn)
@@ -149,7 +148,7 @@ extension ProductViewController {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "ProductCell", for: indexPath) as? ProductTableViewCell else {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: ContentManager.shared.reuse.productCell, for: indexPath) as? ProductTableViewCell else {
             return UITableViewCell()
         }
         
@@ -180,8 +179,8 @@ extension ProductViewController {
         let product = viewModel.products[indexPath.row]
         
         // Instantiate from storyboard
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        if let detailVC = storyboard.instantiateViewController(withIdentifier: "productDetails") as? ProductDetailViewController {
+        let storyboard = UIStoryboard(name: ContentManager.shared.storyboards.main, bundle: nil)
+        if let detailVC = storyboard.instantiateViewController(withIdentifier: ContentManager.shared.reuse.detailController) as? ProductDetailViewController {
             detailVC.product = product
             detailVC.shouldShowLocalAsset = useRandomAssetImages
             navigationController?.pushViewController(detailVC, animated: true)
@@ -210,9 +209,9 @@ extension ProductViewController: ProductsViewModelDelegate {
     }
     func viewModelDidFail(with error: Error) {
         if (error as? URLError)?.code == .notConnectedToInternet {
-            showError("No internet connection.")
+            showError(ContentManager.shared.messages.noInternet)
         } else {
-            showError("Failed to load data. \(error.localizedDescription)")
+            showError("\(ContentManager.shared.messages.failedToLoad) \(error.localizedDescription)")
         }
     }
     func viewModelNoData() {
