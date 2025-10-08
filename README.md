@@ -33,17 +33,9 @@ This iOS app demonstrates a paginated product list with networking, search funct
 
 ## Screenshots
 
-**Product List**  
-![Product List](Screenshots/1.png)  
-
-**Search View**  
-![Search Products](Screenshots/2.png)  
-
-**Product Detail**  
-![Product Detail](Screenshots/3.png)  
-
-**No Internet Screen**  
-![No Internet](Screenshots/4.png)  
+| Product List        | Search View         | Product Detail      | No Internet Screen  |
+|--------------------|-------------------|-------------------|-------------------|
+| ![Product List](Screenshots/1.png) | ![Search Products](Screenshots/2.png) | ![Product Detail](Screenshots/3.png) | ![No Internet](Screenshots/4.png) |Internet Screen | ![No Internet](Screenshots/4.png) |
 
 ---
 
